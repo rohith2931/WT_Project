@@ -1,49 +1,100 @@
-.voterlogin-container{
+.voterlogin-container,
+.dovote-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.voterlogin-form{
-    width:50%;
+
+.voterlogin-form {
+    width: 50%;
     border: 0px solid rgb(70, 69, 69);
     padding: 20px;
     border-radius: 10px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 }
 
-.voterlogin-submit,.voterlogin-textField{
+.voterlogin-submit,
+.voterlogin-textField {
     display: block;
     border-radius: 8px;
-    font-size:1.5rem ;
+    font-size: 1.5rem;
 }
-.voterlogin-textField{
-    border: 1px solid  gray;
-    padding:0.3em ;
+
+.voterlogin-textField {
+    border: 1px solid gray;
+    padding: 0.3em;
     margin: 2rem auto;
 }
-.voterlogin-submit{
+
+.voterlogin-submit {
     margin: 2rem auto;
     background-color: tomato;
     padding: 4px 20px;
     transition: all .8s;
 }
 
-.voterlogin-submit:hover{
+.voterlogin-submit:hover {
     transform: scale(1.1);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
 
 }
 
-.footer-container{
+.footer-container {
     background-color: black;
-    color:white;
-    height:80px;
+    color: white;
+    height: 80px;
     font-size: 2rem;
-    padding:10px;
+    padding: 10px;
     text-align: center;
 }
-.dovote-container{
-    /* display: flex;
+
+input[type="color"] {
+    width: 80px;
+
+}
+
+/* .dovote-container{
+    display: flex;
     justify-content: center;
-    align-items: center; */
+    align-items: center;
+} */
+
+.dovote-container table {
+    width: 80%;
+}
+
+input[type="range"] {
+
+    width: 80%;
+
+    border: 2px solid black;
+
+}
+
+input[type=range]::-webkit-slider-thumb {
+    opacity: 0;
+}
+
+.party-icon {
+    font-size: 3em;
+    padding: 2em;
+    margin: 5em;
+}
+
+.cadidate-name {
+    font-size: 1.5em;
+}
+
+input[type="radio"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--form-control-color);
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
 }

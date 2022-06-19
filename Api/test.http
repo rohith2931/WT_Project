@@ -3,7 +3,7 @@ POST http://localhost:2000/create-voter
 Content-Type: application/json
 
 {
-    "voterId":"apple",
+    "voterId":"ASD1234567",
     "voterPassword":"apple"
 }
 ###
@@ -26,6 +26,11 @@ Content-Type: application/json
     "partyIcon":"icon-1",
     "color":"green" 
 }
+
+
+###
+PUT http://localhost:2000/update-candidate/3
+
 
 ###
 DELETE http://localhost:2000/delete-candidate/0

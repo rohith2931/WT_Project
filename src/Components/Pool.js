@@ -1,40 +1,36 @@
-import React from "react";
+import React,{useState,useEffect} from 'react';
+import axios from 'axios';
+import './Voterlogin.css'
+function Pool(){
 
-function Pool() {
-  let candidate = [
-    {
-      partyIcon: "faAmazon",
-      candidateName: "amazon",
-      votes:100
-    },
-    {
-      partyIcon: "faBaby",
-      candidateName: "baby",
-      votes:50
-    },
-    {
-      partyIcon: "faCak",
-      candidateName: "cake",
-      votes:25
-    },
-  ];
-  let maxVotes=candidate[0].votes*2;
-//   var total=200
-  return (
-    <div className="container">
-    
-      {    
-        candidate.map(obj=><div className="pool mt-4">
-            
-            {/* <label for={obj.id} className="form-label"> */}
-            <p>{obj.candidateName} votes:{obj.votes}</p>
-            {/* </label> */}
-            <input type="range" className="mb-2 " id="obj.id" max={maxVotes} min={0} value={obj.votes} />
+  let [candidates,setCandidates] =useState([])
+
+    useEffect(() =>{
+      axios.get("http://localhost:2000/candidates")
+      .then(res=>{
+        console.log(res.data.payload);
+        candidates = res.data.payload;
+        setCandidates(res.data.payload);
+        console.log(candidates);
+      })
+      .catch(err=>console.log(err.message))
+    },[])
+
+
+    let maxVotes=20
+  return(
+    <div className="voterlogin-container">
+          <div className=" voterlogin-form">
+            {candidates.length && candidates.map((obj) => (<div className=" mt-4">
+            <p> <strong> {obj.candidateName}</strong> votes:{obj.votes}  </p>
+            <div className=" text-center mx-auto">
+            <input className=" mb-2"  type="range"   id="obj.id"  max={maxVotes}  min={0}  value={obj.votes}  />
             </div>
-        )
-      }
+          </div>
+            ))}
     </div>
-  );
+    </div>
+  )
 }
 
 export default Pool;

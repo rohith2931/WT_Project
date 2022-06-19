@@ -24,7 +24,7 @@ function App() {
           <Route  path ="/admin" element={<Navigate replace to="/admin/login" />} />
           <Route path ="/admin/login" element={<Adminlogin/>} />
           <Route path ="/admin/dashboard" element={<Admindashbord/>} >
-              <Route  path ="/admin/dashboard" element={<Navigate replace to="pool" />} />
+              {/* <Route  path ="/admin/dashboard" element={<Navigate replace to="pool" />} /> */}
               <Route  path ="addvoter" element={<Addvoter/>} />
               <Route  path ="addcandidate" element={<Addcandidate/>} />
               <Route  path ="pool" element={<Pool/>} />

@@ -2,6 +2,8 @@ const { request } = require("express");
 const exp = require("express");
 const bcryptjs = require("bcryptjs");
 
+const jwt = require('jsonwebtoken')
+
 const expressAsyncHandler = require("express-async-handler");
 
 const mongoDBClient = require("mongodb").MongoClient;
@@ -10,8 +12,10 @@ const path= require("path");
 
 require('dotenv').config()
 
-const app = exp();
+const app = exp(); 
+
 app.use(exp.static(path.join(__dirname,"./build")));
+
 app.use(exp.json());
 
 const dbURL =process.env.DATABASE_URL;
@@ -31,9 +35,9 @@ mongoDBClient
     console.log("connextion established successfully");
   })
   .catch((err) => console.log("error connecting db", err.message));
-app.post(
-  "/voter-login",
-  expressAsyncHandler(async (req, res) => {
+
+
+app.post("/voter-login",expressAsyncHandler(async (req, res) => {
     let voterObj = req.body;
 
     let voterCollection = req.app.get("voterCollection");
@@ -42,27 +46,25 @@ app.post(
     if (user == null) {
       res.send({ message: "invalid user" });
     } else {
-      let status = await bcryptjs.compare(userObj.username, user.password);
+      let status = await bcryptjs.compare(voterObj.voterPassword, user.voterPassword);
 
       if (status == false) {
         res.send({ message: "incorrect password" });
       } else {
-        let token = jwt.sign({ username: userObj.username }, process.env.SECRET_KEY, {
+        let token = jwt.sign({ username: voterObj.voterId }, process.env.SECRET_KEY, {
           expiresIn: 60,
         });
         res.send({
           message: "login successful",
           payload: token,
-          userObj: userObj,
+          voterObj: voterObj,
         });
       }
     }
   })
 );
 
-app.post(
-  "/admin-login",
-  expressAsyncHandler(async (req, res) => {
+app.post("/admin-login",expressAsyncHandler(async (req, res) => {
     let voterObj = req.body;
 
     let voterCollection = req.app.get("voterCollection");
@@ -143,7 +145,7 @@ app.get(
 
     let candidates = await candidateCollection.find().toArray();
 
-    response.send({ message: candidates });
+    response.send({ message: "sending all candidates",payload: candidates });
   })
 );
 
@@ -163,6 +165,10 @@ app.post(
     if (candidateObj != null) {
       response.send({ message: " candidate already exists" });
     } else {
+      let canID = await candidateCollection.find().count()
+      newCandidate["votes"]=0
+      newCandidate["candidateId"]=canID
+
       await candidateCollection.insertOne(newCandidate);
       response.send({ message: " candidate added successfully" });
     }
@@ -190,6 +196,31 @@ app.delete(
     }
   })
 );
+
+
+//update candidate
+app.put("/update-candidate/:candidateId",
+  expressAsyncHandler(async (request, response) => {
+    let candidateId = +request.params.candidateId;
+
+    let candidateCollection = app.get("candidateCollection");
+
+    let candidateObj = await candidateCollection.findOne({candidateId: candidateId,});
+
+    if (candidateObj == null) {
+      response.send({ message: " candidate does not exists" });
+    } else {
+      await candidateCollection.update({candidateId: candidateId},{$set:{...candidateObj,votes:candidateObj.votes+1}});
+      response.send({ message: " candidate votes updated successfully" });
+    }
+  })
+);
+// dealing with refresh
+
+app.use('*',(request,response)=>{
+  response.sendFile(path.join(__dirname,'./build/index.html'))
+})
+
 
 // for in valid patha
 
