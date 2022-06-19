@@ -1,0 +1,31 @@
+// create voter
+POST http://localhost:2000/create-voter
+Content-Type: application/json
+
+{
+    "voterId":"apple",
+    "voterPassword":"apple"
+}
+###
+// get user by ID
+GEt http://localhost:2000/voters/apple
+
+
+###
+// get all candidates
+GET http://localhost:2000/candidates
+
+###
+POST http://localhost:2000/create-candidate
+Content-Type: application/json
+
+{
+    "candidateId":0,
+    "votes":0,
+    "candidateName":"rohith",
+    "partyIcon":"icon-1",
+    "color":"green" 
+}
+
+###
+DELETE http://localhost:2000/delete-candidate/0
